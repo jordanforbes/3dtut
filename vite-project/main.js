@@ -76,6 +76,53 @@ Array(200).fill().forEach(addStar) //creates 200 stars
 const spaceTexture = new THREE.TextureLoader().load('nebula.jpg'); //load background image
 scene.background = spaceTexture //set scene's background image
 
+
+
+const jordanTexture = new THREE.TextureLoader().load('me.jpeg');
+const jordan = new THREE.Mesh(
+  new THREE.BoxGeometry(3,3,3),
+  new THREE.MeshBasicMaterial( { map: jordanTexture } )
+);
+jordan.position.set(10,10,10);
+
+scene.add(jordan);
+
+
+//earth object
+const earthTexture = new THREE.TextureLoader().load('earth-hires.jpeg');
+const normalTexture = new THREE.TextureLoader().load('earth-normalmap.jpg ');
+const earth = new THREE.Mesh(
+  new THREE.SphereGeometry(3,32,32),
+  new THREE.MeshBasicMaterial( { 
+    map: earthTexture ,
+    normalMap: normalTexture
+  } )
+);
+earth.position.z = 30;
+earth.position.setX(-10);
+
+scene.add(earth);
+
+
+function moveCamera(){
+  const t = document.body.getBoundingClientRect().top;
+  earth.rotation.x += 0.05;
+  earth.rotation.y += 0.075;
+  earth.rotation.z += 0.05;
+
+  jordan.rotation.y += 0.01;
+  jordan.rotation.z += 0.01;
+
+  camera.position.z = t * -0.01; //top value will always be negative so you should multiply it by a negative number
+  camera.position.x = t * -0.0002;
+  camera.position.y = t * -0.0002;
+}
+//it looks terrible but it works
+
+document.body.onscroll = moveCamera
+
+
+
 //call the renderer to re render the scene
 //instead of calling the renderer every time a change happens, use a recursive function like this to do it automatically
 function animate(){ //sort of like a game loop
@@ -84,6 +131,8 @@ function animate(){ //sort of like a game loop
   torus.rotation.z += 0.01;
   torus.rotation.x += 0.01;
   torus.rotation.y += 0.01;
+  jordan.rotation.x +=0.01;
+  //earth.rotation.y +=0.01;
   //higher numbers are faster
   controls.update(); //updates changes to the orbitcontrols
   renderer.render( scene, camera );

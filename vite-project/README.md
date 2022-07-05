@@ -23,3 +23,5 @@ add: import * as THREE from 'three'; to main.js
 3. renderer
 
 add: const scene = new THREE.Scene(); to main.js
+
+make sure that the style.css file has main's position as absolute or the text won't appear on the screen
